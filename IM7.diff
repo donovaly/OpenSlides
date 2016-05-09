@@ -38,3 +38,5 @@ index 40bc8b5..3cbb663 100644
 -    print >> sys.stderr, 'Execution of "convert" failed.'
 +    print >> sys.stderr, 'Execution of "magick" failed.'
      sys.exit(1)
+
+     
