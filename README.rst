@@ -21,7 +21,7 @@ current version of a webbrowser.
 Installation
 ============
 
-1. Installation on GNU/Linux or Mac OS XI
+1. Installation on GNU/Linux or Mac OS X
 ----------------------------------------
 
 a. Check requirements
