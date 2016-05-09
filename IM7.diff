@@ -1,0 +1,40 @@
+ lib/configure.py              | 2 +-
+ lib/scripts/convertDefault.py | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/lib/configure.py b/lib/configure.py
+index 0dcc4ce..564538d 100644
+--- a/lib/configure.py
++++ b/lib/configure.py
+@@ -972,7 +972,7 @@ def checkConverterEntries():
+     checkProg('an EPS -> PDF converter', ['epstopdf'],
+         rc_entry = [ r'\converter eps        pdf6       "epstopdf --outfile=$$o $$i"	""'])
+     #
+-    checkProg('an EPS -> PNG converter', ['convert $$i $$o'],
++    checkProg('an EPS -> PNG converter', ['magick $$i $$o', 'convert $$i $$o'],
+         rc_entry = [ r'\converter eps        png        "%%"	""'])
+     #
+     # no agr -> pdf6 converter, since the pdf library used by gracebat is not
+diff --git a/lib/scripts/convertDefault.py b/lib/scripts/convertDefault.py
+index 40bc8b5..3cbb663 100644
+--- a/lib/scripts/convertDefault.py
++++ b/lib/scripts/convertDefault.py
+@@ -20,7 +20,7 @@ import os, re, sys
+ 
+ # We may need some extra options only supported by recent convert versions
+ re_version = re.compile(r'^Version:.*ImageMagick\s*(\d*)\.(\d*)\.(\d*).*$')
+-fout = os.popen('convert -version 2>&1')
++fout = os.popen('magick -version 2>&1')
+ output = fout.readline()
+ fout.close()
+ version = re_version.match(output)
+@@ -50,7 +50,7 @@ if sys.argv[1] == 'pdf' and (version >= 0x060206 or gm):
+ if sys.argv[3] == 'ppm' and (version >= 0x060305 or gm):
+     opts = opts + ' -flatten'
+ 
+-if os.system(r'convert %s "%s" "%s"' % (opts, sys.argv[2], sys.argv[3] + ':' + sys.argv[4])) != 0:
++if os.system(r'magick %s "%s" "%s"' % (opts, sys.argv[2], sys.argv[3] + ':' + sys.argv[4])) != 0:
+     print >> sys.stderr, sys.argv[0], 'ERROR'
+-    print >> sys.stderr, 'Execution of "convert" failed.'
++    print >> sys.stderr, 'Execution of "magick" failed.'
+     sys.exit(1)
