@@ -1,0 +1,26 @@
+language: python
+sudo: false
+cache:
+  directories:
+    - node_modules
+    - $HOME/virtualenv/python$TRAVIS_PYTHON_VERSION/lib/python$TRAVIS_PYTHON_VERSION/site-packages/
+    - $HOME/virtualenv/python$TRAVIS_PYTHON_VERSION/bin/
+python:
+  - "3.4"
+  - "3.5"
+install:
+  - "pip install --upgrade --requirement requirements.txt"
+  - "npm install"
+  - "node_modules/.bin/gulp --production"
+script:
+  - "flake8 openslides tests"
+  - "isort --check-only --recursive openslides tests"
+  - "gulp jshint"
+
+  - "DJANGO_SETTINGS_MODULE='tests.settings' coverage run ./manage.py test tests.unit"
+  - "coverage report --fail-under=40"
+
+  - "DJANGO_SETTINGS_MODULE='tests.settings' coverage run ./manage.py test tests.integration"
+  - "coverage report --fail-under=50"
+
+  - "DJANGO_SETTINGS_MODULE='tests.old.settings' ./manage.py test tests.old"
